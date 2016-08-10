@@ -31,3 +31,29 @@ def test_create_tuples_2():
     input_list = ['hello', 'world', 'test', 'tttest']
     out = [('hello', 'world', 'test'), ('world', 'test', 'tttest')]
     assert list(create_tuples(input_list)) == out
+
+
+def test_generate_dictionary_1():
+    from trigrams import generate_dictionary
+    tuples = [('hello', 'world', 'test'), ('world', 'test', 'tttest')]
+    assert generate_dictionary(tuples) == {
+        ('hello', 'world'): ['test'],
+        ('world', 'test'): ['tttest']
+    }
+
+def test_generate_dictionary_2():
+    from trigrams import generate_dictionary
+    tuples = [
+        ('I', 'wish', 'I'),
+        ('wish', 'I', 'may'),
+        ('I', 'may', 'I'),
+        ('may', 'I', 'wish'),
+        ('I', 'wish', 'I'),
+        ('wish', 'I', 'might')
+    ]
+    assert generate_dictionary(tuples) == {
+        ('I', 'wish'): ['I', 'I'],
+        ('wish', 'I'): ['may', 'might'],
+        ('may', 'I'):  ['wish'],
+        ('I', 'may'):  ['I']
+    }

@@ -19,3 +19,15 @@ def find_and_replace_specials(content):
 
 def create_tuples(t):
     return zip(t, t[1:], t[2:])
+
+
+def generate_dictionary(tuples):
+    d = {}
+    for a, b, value in tuples:
+        d.setdefault((a,b), []).append(value)
+    return d
+
+
+def process_file(filename):
+    s = find_and_replace_specials(pull_in_file(filename))
+    return generate_dictionary(create_tuples(s.split()))
