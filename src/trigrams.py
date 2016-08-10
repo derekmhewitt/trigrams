@@ -15,3 +15,7 @@ def pull_in_file(filename):
 def find_and_replace_specials(content):
     """docstring."""
     return re.sub('[-\\()!@#$%^&*;"<>|/,.1234567890_=+:]', ' ', content)
+
+
+def create_tuples(t):
+    return zip(t, t[1:], t[2:])
