@@ -41,6 +41,7 @@ def test_generate_dictionary_1():
         ('world', 'test'): ['tttest']
     }
 
+
 def test_generate_dictionary_2():
     from trigrams import generate_dictionary
     tuples = [
@@ -57,3 +58,13 @@ def test_generate_dictionary_2():
         ('may', 'I'):  ['wish'],
         ('I', 'may'):  ['I']
     }
+
+
+def test_process_file():
+    from trigrams import process_file
+    assert process_file('filetest.txt') == {
+        ('a', 'test'): ['file'],
+        ('is', 'a'): ['test'],
+        ('this', 'is'): ['a']
+    }
+
