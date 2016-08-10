@@ -2,6 +2,7 @@
 """docstring."""
 import io
 import re
+import random
 
 
 def pull_in_file(filename):
@@ -31,3 +32,7 @@ def generate_dictionary(tuples):
 def process_file(filename):
     s = find_and_replace_specials(pull_in_file(filename))
     return generate_dictionary(create_tuples(s.split()))
+
+
+def pick_first_two_words(dictionary):
+    return random.choice(list(dictionary))

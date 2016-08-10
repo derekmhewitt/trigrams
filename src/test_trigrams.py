@@ -68,3 +68,7 @@ def test_process_file():
         ('this', 'is'): ['a']
     }
 
+
+def test_pick_first_two_words():
+    from trigrams import pick_first_two_words
+    assert pick_first_two_words({(1, 2): 3}) == (1, 2)
