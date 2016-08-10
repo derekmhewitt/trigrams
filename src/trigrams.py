@@ -25,7 +25,7 @@ def create_tuples(t):
 def generate_dictionary(tuples):
     d = {}
     for a, b, value in tuples:
-        d.setdefault((a,b), []).append(value)
+        d.setdefault((a, b), []).append(value)
     return d
 
 
@@ -36,3 +36,23 @@ def process_file(filename):
 
 def pick_first_two_words(dictionary):
     return random.choice(list(dictionary))
+
+
+def new_starting_point(dictionary):
+    return pick_first_two_words(dictionary)[0]
+
+
+def generate_sentence(dictionary, length):
+    result = ""
+    word1, word2 = pick_first_two_words(dictionary)
+    for i in range(length):
+        result += '{} '.format(word1)
+        possible_words = dictionary.get((word1, word2), False)
+        if possible_words:
+            word1, word2 = word2, random.choice(possible_words)
+        else:
+            word1, word2 = pick_first_two_words(dictionary)
+    return result
+
+
+print(generate_sentence(process_file('filetest.txt'), 50))
