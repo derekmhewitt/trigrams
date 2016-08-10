@@ -1,16 +1,24 @@
 # -*- coding: utf-8 -*-
-"""docstring."""
+"""Here we test our functions from trigrams.py."""
 import pytest
+
+GENERATE_SENTENCE_TEST_TABLE = [
+    7,
+    4,
+    12
+]
 
 
 def test_pull_in_file():
-    """docstring."""
+    """Function tests pull_in_file function with test file."""
     from trigrams import pull_in_file
     assert pull_in_file('filetest.txt') == 'this is a test file'
 
 
 def test_find_and_replace_specials():
-    """docstring."""
+    """Function tests find_and_replace_specials function with special
+    characters and text.
+    """
     from trigrams import find_and_replace_specials
     result = find_and_replace_specials('this *-# has *(#$ special @)# chars')
     out = 'this     has      special     chars'
@@ -18,7 +26,7 @@ def test_find_and_replace_specials():
 
 
 def test_create_tuples_1():
-    """docstring."""
+    """Function tests create_tuples with test data."""
     from trigrams import create_tuples
     input_list = ['hello', 'world', 'test']
     out = [('hello', 'world', 'test')]
@@ -26,7 +34,7 @@ def test_create_tuples_1():
 
 
 def test_create_tuples_2():
-    """docstring."""
+    """Function tests create_tuples with alternative test data."""
     from trigrams import create_tuples
     input_list = ['hello', 'world', 'test', 'tttest']
     out = [('hello', 'world', 'test'), ('world', 'test', 'tttest')]
@@ -34,6 +42,7 @@ def test_create_tuples_2():
 
 
 def test_generate_dictionary_1():
+    """Function tests generate_dictionary with test data."""
     from trigrams import generate_dictionary
     tuples = [('hello', 'world', 'test'), ('world', 'test', 'tttest')]
     assert generate_dictionary(tuples) == {
@@ -43,6 +52,7 @@ def test_generate_dictionary_1():
 
 
 def test_generate_dictionary_2():
+    """Function tests generate_dictionary with test data."""
     from trigrams import generate_dictionary
     tuples = [
         ('I', 'wish', 'I'),
@@ -55,12 +65,13 @@ def test_generate_dictionary_2():
     assert generate_dictionary(tuples) == {
         ('I', 'wish'): ['I', 'I'],
         ('wish', 'I'): ['may', 'might'],
-        ('may', 'I'):  ['wish'],
-        ('I', 'may'):  ['I']
+        ('may', 'I'): ['wish'],
+        ('I', 'may'): ['I']
     }
 
 
 def test_process_file():
+    """Function tests process_file with test data."""
     from trigrams import process_file
     assert process_file('filetest.txt') == {
         ('a', 'test'): ['file'],
@@ -70,5 +81,18 @@ def test_process_file():
 
 
 def test_pick_first_two_words():
+    """Function tests pick_first_two_words with test data."""
     from trigrams import pick_first_two_words
     assert pick_first_two_words({(1, 2): 3}) == (1, 2)
+
+
+@pytest.mark.parametrize('n', GENERATE_SENTENCE_TEST_TABLE)
+def test_generate_sentence(n):
+    """Function tests generate_sentence with test data."""
+    from trigrams import generate_sentence
+    d = {
+        ('a', 'test'): ['file'],
+        ('is', 'a'): ['test'],
+        ('this', 'is'): ['a']
+    }
+    assert len(generate_sentence(d, n).split()) == n
