@@ -22,15 +22,10 @@ def find_and_replace_specials(content):
     return re.sub('[-\\()!@#$%^&*;"<>|/1234567890_=+:]', ' ', content)
 
 
-def create_tuples(t):
-    """Function creates tuples from file data."""
-    return zip(t, t[1:], t[2:])
-
-
-def generate_dictionary(tuples):
+def generate_dictionary(tups):
     """Function generates a dictionary from our tuples."""
     d = {}
-    for a, b, value in tuples:
+    for a, b, value in zip(tups, tups[1:], tups[2:]):
         d.setdefault((a, b), []).append(value)
     return d
 
@@ -40,7 +35,7 @@ def process_file(filename):
     dictionary for use in following functions.
     """
     s = find_and_replace_specials(pull_in_file(filename))
-    return generate_dictionary(create_tuples(s.split()))
+    return generate_dictionary(s.split())
 
 
 def pick_first_two_words(dictionary):
@@ -48,29 +43,48 @@ def pick_first_two_words(dictionary):
     return random.choice(list(dictionary))
 
 
+def next_sentence_state(dictionary, word1, word2):
+    """Generates the next state for generate_sentence. Purely a helper
+    function for generate_sentence.
+    """
+    possible_words = dictionary.get((word1, word2), False)
+    if possible_words:
+        word1, word2 = word2, random.choice(possible_words)
+    else:
+        word1, word2 = pick_first_two_words(dictionary)
+    return word1, word2
+
+
 def generate_sentence(dictionary, length):
-    """Function generates a sentence of 'length' length and returns it."""
+    """Return a generated sentence of the given length"""
     result = ""
     word1, word2 = pick_first_two_words(dictionary)
     for i in range(length):
         result += '{} '.format(word1)
-        possible_words = dictionary.get((word1, word2), False)
-        if possible_words:
-            word1, word2 = word2, random.choice(possible_words)
-        else:
-            word1, word2 = pick_first_two_words(dictionary)
+        word1, word2 = next_sentence_state(dictionary, word1, word2)
     return result
+
+
+def generate_from_args():
+    """Generate a sentence from the command line.
+    """
+    try:
+        arg1 = sys.argv[1]
+        arg2 = int(sys.argv[2])
+        print(generate_sentence(process_file(arg1), arg2))
+    except ValueError:
+        print('User supplied invalid length argument.')
 
 
 def main():
     """Main function, calls all others."""
-    if len(sys.argv) >= 3:
-        try:
-            arg1 = sys.argv[1]
-            arg2 = int(sys.argv[2])
-            print(generate_sentence(process_file(arg1), arg2))
-        except ValueError:
-            print('User supplied invalid length argument.')
+    if len(sys.argv) == 3:
+        generate_from_args()
+    else:
+        print('USAGE:')
+        print('  python trigrams.py input length')
+        print('where input is a text file and length is the number')
+        print('of words to generate.')
 
 
 if __name__ == '__main__':
