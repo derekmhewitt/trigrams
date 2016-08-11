@@ -24,10 +24,10 @@ def find_and_replace_specials(content):
 
 def generate_dictionary(words):
     """Function generates a dictionary from our tuples."""
-    d = {}
-    for a, b, value in zip(words, words[1:], words[2:]):
-        d.setdefault((a, b), []).append(value)
-    return d
+    dictionary = {}
+    for word1, word2, word3 in zip(words, words[1:], words[2:]):
+        dictionary.setdefault((word1, word2), []).append(word3)
+    return dictionary
 
 
 def process_file(filename):
