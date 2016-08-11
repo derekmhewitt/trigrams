@@ -76,16 +76,15 @@ def generate_from_args():
         print('User supplied invalid length argument.')
 
 
-def main():
-    """Main function, calls all others."""
-    if len(sys.argv) == 3:
-        generate_from_args()
-    else:
-        print('USAGE:')
-        print('  python trigrams.py input length')
-        print('where input is a text file and length is the number')
-        print('of words to generate.')
+def help():
+    print('USAGE:')
+    print('  python trigrams.py input length')
+    print('where input is a text file and length is the number')
+    print('of words to generate.')
 
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) == 3:
+        generate_from_args()
+    else:
+        help()
