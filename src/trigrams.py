@@ -22,10 +22,10 @@ def find_and_replace_specials(content):
     return re.sub('[-\\()!@#$%^&*;"<>|/1234567890_=+:]', ' ', content)
 
 
-def generate_dictionary(tups):
+def generate_dictionary(words):
     """Function generates a dictionary from our tuples."""
     d = {}
-    for a, b, value in zip(tups, tups[1:], tups[2:]):
+    for a, b, value in zip(words, words[1:], words[2:]):
         d.setdefault((a, b), []).append(value)
     return d
 
