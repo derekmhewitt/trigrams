@@ -57,12 +57,12 @@ def next_sentence_state(dictionary, word1, word2):
 
 def generate_sentence(dictionary, length):
     """Return a generated sentence of the given length"""
-    result = ""
+    result = []
     word1, word2 = pick_first_two_words(dictionary)
     for i in range(length):
-        result += '{} '.format(word1)
+        result.append(word1)
         word1, word2 = next_sentence_state(dictionary, word1, word2)
-    return result
+    return " ".join(result)
 
 
 def generate_from_args():
